@@ -93,7 +93,7 @@ class WxChatController extends Controller
     public function wxChatStatus(Request $request)
     {
         $status = $request->status;   //二维码唯一标识
-        $openid=$this->getOpenid();
+        $openid=Cache::put('wechat_'.$status);
         if(!$openid){
             return json_encode(['code'=>0,'msg'=>'用户未扫码']);
         }
