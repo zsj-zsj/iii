@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 
 class WxChatController extends Controller
 {
@@ -36,8 +37,20 @@ class WxChatController extends Controller
         $data=date('Y-m-d H:i:s').$file;
         file_put_contents('wxMessage.log',$data,FILE_APPEND);
         $xml=simplexml_load_string($file);
-        
 
+        if($xml->MsgType== 'event' && $xml->Event== 'SCAN' ){
+            $status = $xml->EventKey;
+            $openid = $xml->FromUserName;
+            Cache::put('wechat_'.$status,$openid,100);
+            reutrn "正在登陆中";
+        }
+        if($xml->MsgType== 'event' && $xml->Event== 'subscribe' ){
+            $openid = $xml->FromUserName;  //openid
+            $status = $xml->EventKey;  //带参数二维码
+            $status = ltrim($status,'qrscene_');
+            Cache::put('wechat_'.$status,$openid,100);
+            reutrn "正在登陆中";
+        }
     }
 
     //生成二维码
