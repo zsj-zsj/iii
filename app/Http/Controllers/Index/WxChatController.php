@@ -34,10 +34,9 @@ class WxChatController extends Controller
     {
         $file=file_get_contents("php://input");
         $data=date('Y-m-d H:i:s').$file;
-
-//        file_put_contents('wxMessage.log',$data,FILE_APPEND);
-        file_put_contents('/wxMessage.log',$data);
+        file_put_contents('wxMessage.log',$data,FILE_APPEND);
         $xml=simplexml_load_string($file);
+        
 
     }
 
