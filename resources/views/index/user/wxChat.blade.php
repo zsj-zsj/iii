@@ -22,25 +22,25 @@
 
 <script src="/style/adminStyle/js/jq.js"></script>
 <script>
-    var t = setInterval("check();",2000);
-    //setTimeOut
-    var status = "{{$status}}";
-    function check(){
-        //js轮询
-        $.ajax({
-            url:"{{url('/wxChatStatus')}}",
-            dataType:"json",
-            data:{status:status},
-            success:function(res){
-                //返回提示
-                if(res.code == 1){
-                    //关闭定时器
-                    clearInterval(t);
-                    //扫码登陆成功
-                    alert(res.msg);
-                    location.href="{{url('/')}}";
-                }
-            }
-        })
-    }
+    {{--var t = setInterval("check();",2000);--}}
+    {{--//setTimeOut--}}
+    {{--var status = "{{$status}}";--}}
+    {{--function check(){--}}
+    {{--    //js轮询--}}
+    {{--    $.ajax({--}}
+    {{--        url:"{{url('/wxChatStatus')}}",--}}
+    {{--        dataType:"json",--}}
+    {{--        data:{status:status},--}}
+    {{--        success:function(res){--}}
+    {{--            //返回提示--}}
+    {{--            if(res.code == 1){--}}
+    {{--                //关闭定时器--}}
+    {{--                clearInterval(t);--}}
+    {{--                //扫码登陆成功--}}
+    {{--                alert(res.msg);--}}
+    {{--                location.href="{{url('/')}}";--}}
+    {{--            }--}}
+    {{--        }--}}
+    {{--    })--}}
+    {{--}--}}
 </script>
