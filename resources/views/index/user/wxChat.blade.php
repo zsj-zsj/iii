@@ -1,25 +1,50 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>WxChatLogin</title>
+    <meta charset="utf-8"/>
+    <title>WechatLogin</title>
+    <meta name="author" content="DeathGhost"/>
+    <link rel="stylesheet" type="text/css" href="/style/adminStyle/user/css/styles.css" tppabs="/style/adminStyle/user/css/styles.css"/>
+    <script src="/style/adminStyle/user/js/jquery.js"></script>
+    <script src="/style/adminStyle/user/js/verificationNumbers.js" tppabs="/style/adminStyle/user/js/verificationNumbers.js"></script>
+    <script src="/style/adminStyle/user/js/Particleground.js" tppabs="/style/adminStyle/user/js/Particleground.js"></script>
+    <style>
+        body {
+            height: 100%;
+            background: #16a085;
+            overflow: hidden;
+        }
+
+        canvas {
+            z-index: -1;
+            position: absolute;
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function () {
+            //粒子背景特效
+            $('body').particleground({
+                dotColor: '#5cbdaa',
+                lineColor: '#5cbdaa'
+            });
+        });
+    </script>
 </head>
-
-<style>
-
-</style>
 <body>
-<table aligin="center">
-    <h1 style="color: red">欢迎使用扫码登录</h1>
-    <img src="http://qr.topscan.com/api.php?text={{$wxChatImg}}">
-</table>
+<form method="post" id="form" >
+    @csrf
+    <dl class="admin_login">
+        <dt>
+            <strong>微信扫码登录</strong>
+        </dt>
+            <img src="http://qr.topscan.com/api.php?text={{$wxChatImg}}">
+    </dl>
+</form>
 </body>
 </html>
 
-<script src="/style/adminStyle/js/jq.js"></script>
 <script>
     var t = setInterval("check();",2000);
     //setTimeOut

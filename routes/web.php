@@ -123,8 +123,7 @@ Route::post('loginDo','Index\UserController@loginDo');    //执行登录
 
 
 Route::get('wxChat','Index\WxChatController@wxChat');    //生成二维码
-Route::get('indexEwm','Index\WxChatController@indexEwm');    //生成二维码
-
+Route::get('indexEwm','Index\WxChatController@indexEwm');    //二维码视图页面
 Route::get('wxChatStatus','Index\WxChatController@wxChatStatus');    //监听扫码状态
 
 Route::get('/','Index\IndexController@index');    //前台首页

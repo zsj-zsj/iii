@@ -35,7 +35,6 @@ class WxChatController extends Controller
 
         //转二维码
         $tickets=UrlEncode($arr['ticket']);
-
         $urls=env('APP_URL')."indexEwm?status=".$status;
         return view('index.user.wxChat',['wxChatImg'=>$urls,'status'=>$status]);
     }
@@ -51,7 +50,6 @@ class WxChatController extends Controller
         $id=request()->status;
 
         $openid=$this->getOpenid();
-
         Cache::put('WxLogin_'.$id,$openid,10);
         return '扫码成功,请等待PC端跳转';
     }
