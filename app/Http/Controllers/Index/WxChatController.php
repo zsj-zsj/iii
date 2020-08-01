@@ -42,14 +42,14 @@ class WxChatController extends Controller
             $status = $xml->EventKey;
             $openid = $xml->FromUserName;
             Cache::put('wechat_'.$status,$openid,100);
-            reutrn "正在登陆中";
+            echo "正在登陆中";die;
         }
         if($xml->MsgType== 'event' && $xml->Event== 'subscribe' ){
             $openid = $xml->FromUserName;  //openid
             $status = $xml->EventKey;  //带参数二维码
             $status = ltrim($status,'qrscene_');
             Cache::put('wechat_'.$status,$openid,100);
-            reutrn "正在登陆中";
+            echo "正在登陆中";die;
         }
     }
 
