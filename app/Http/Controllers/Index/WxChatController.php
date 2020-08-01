@@ -30,14 +30,20 @@ class WxChatController extends Controller
         }
     }
 
+    public function wxMessage()
+    {
+        $file=file_get_contents("php://input");
+        $data=date('Y-m-d H:i:s').$file;
+        file_put_contents('wxMessage.log',$data,FILE_APPEND);
+        $xml=simplexml_load_string($file);
+    }
+
     //生成二维码
     public function wxChat()
     {
         $accessToken=$this->getAccessToken();
         //post
         $status = md5(uniqid());
-        $redis_key='WxOnly'.$status;
-        Redis::set($redis_key,$status);
         $postData = [
             'expire_seconds' => 300,
             'action_name' => 'QR_STR_SCENE',
