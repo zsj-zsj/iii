@@ -10,49 +10,6 @@ use Illuminate\Support\Facades\Cache;
 
 class WxChatController extends Controller
 {
-    //接入微信文档
-    public function checkSignature()
-    {
-        $token = '12345678asdfgh';
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];
-        $echostr=$_GET["echostr"];
-
-        $tmpArr = array($token, $timestamp, $nonce);
-        sort($tmpArr, SORT_STRING);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
-
-        if( $tmpStr == $signature ){
-            return $echostr;
-        }else{
-            die;
-        }
-    }
-
-    public function wxMessage()
-    {
-        $file=file_get_contents("php://input");
-        $data=date('Y-m-d H:i:s').$file;
-        file_put_contents('wxMessage.log',$data,FILE_APPEND);
-        $xml=simplexml_load_string($file);
-
-        if($xml->MsgType== 'event' && $xml->Event== 'SCAN' ){
-            $status = $xml->EventKey;
-            $openid = $xml->FromUserName;
-            Cache::put('wechat_'.$status,$openid,100);
-            return '扫码成功,请等待PC端跳转';
-        }
-        if($xml->MsgType== 'event' && $xml->Event== 'subscribe' ){
-            $openid = $xml->FromUserName;  //openid
-            $status = $xml->EventKey;  //带参数二维码
-            $status = ltrim($status,'qrscene_');
-            Cache::put('wechat_'.$status,$openid,100);
-            return '扫码成功,请等待PC端跳转';
-        }
-    }
-
     //生成二维码
     public function wxChat()
     {
@@ -91,7 +48,7 @@ class WxChatController extends Controller
         return $token['access_token'];
     }
     public function indexEwm(){
-        $id=request('status');
+        $id=request()->status;
 
         $openid=$this->getOpenid();
 
