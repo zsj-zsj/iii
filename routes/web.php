@@ -120,6 +120,8 @@ Route::post('regEmailSendCode','Index\UserController@regEmailSendCode'); //邮�
 Route::get('onlyName','Index\UserController@onlyName'); //ajax用户名唯一性
 Route::get('login','Index\UserController@login');    //登录
 Route::post('loginDo','Index\UserController@loginDo');    //执行登录
+
+Route::post('checkSignature','Index\WxChatController@checkSignature');    //接入微信文档
 Route::get('wxChat','Index\WxChatController@wxChat');    //生成二维码
 Route::get('wxChatStatus','Index\WxChatController@wxChatStatus');    //监听扫码状态
 

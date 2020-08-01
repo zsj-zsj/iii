@@ -5,17 +5,41 @@ namespace App\Http\Controllers\Index;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Redis;
 
 class WxChatController extends Controller
 {
+    //接入微信文档
+    public function checkSignature()
+    {
+        $token = '12345678asdfgh';
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+        $echostr=$_GET["echostr"];
+
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+        if( $tmpStr == $signature ){
+            return $echostr;
+        }else{
+            die;
+        }
+    }
+
     //生成二维码
     public function wxChat()
     {
         $accessToken=$this->getAccessToken();
         //post
         $status = md5(uniqid());
+        $redis_key='WxOnly'.$status;
+        Redis::set($redis_key,$status);
         $postData = [
-            'expire_seconds' => 604800,
+            'expire_seconds' => 300,
             'action_name' => 'QR_STR_SCENE',
             'action_info' => [
                 'scene' => [
@@ -48,7 +72,7 @@ class WxChatController extends Controller
     public function wxChatStatus(Request $request)
     {
         $status = $request->status;   //二维码唯一标识
-        $openid = session('openid');
+        $openid=$this->getOpenid();
         if(!$openid){
             return json_encode(['code'=>0,'msg'=>'用户未扫码']);
         }
@@ -63,14 +87,13 @@ class WxChatController extends Controller
         if(!empty($openid)){
             return $openid;
         }
-        //微信授权成功后 跳转咱们配置的地址 （回调地址）带一个code参数
         $code = request()->input('code');
         if(empty($code)){
             //没有授权 跳转到微信服务器进行授权
-            $host = $_SERVER['shops777.com'];  //域名
-            $uri = $_SERVER['/wxChatStatus']; //路由参数
+            $host = $_SERVER['HTTP_HOST'];  //域名
+            $uri = $_SERVER['REQUEST_URI']; //路由参数
             $redirect_uri = urlencode("http://".$host.$uri);  // ?code=xx
-            // dd($redirect_uri);
+//             dd($redirect_uri);
             $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".env('WxappID')."&redirect_uri={$redirect_uri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
             header("location:".$url);die;
         }else{
@@ -82,7 +105,6 @@ class WxChatController extends Controller
             //获取到openid之后  存储到session当中
             session(['openid'=>$openid]);
             return $openid;
-            //如果是非静默授权 再通过openid  access_token获取用户信息
         }
     }
 }
