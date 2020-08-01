@@ -14,8 +14,7 @@
 <body>
 <table aligin="center">
     <h1 style="color: red">欢迎使用扫码登录</h1>
-{{--    <img src="http://qr.topscan.com/api.php?text={{$wxChatImg}}">--}}
-    <img src="{{$wxChatImg}}">
+    <img src="http://qr.topscan.com/api.php?text={{$wxChatImg}}">
 </table>
 </body>
 </html>

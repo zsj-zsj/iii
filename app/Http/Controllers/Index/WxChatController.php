@@ -78,7 +78,8 @@ class WxChatController extends Controller
 
         //转二维码
         $tickets=UrlEncode($arr['ticket']);
-        $urls='https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.$tickets;
+
+        $urls=env('APP_URL')."indexEwm?status=".$status;
         return view('index.user.wxChat',['wxChatImg'=>$urls,'status'=>$status]);
     }
     //获取token
@@ -89,20 +90,27 @@ class WxChatController extends Controller
         $token=json_decode($json,true);
         return $token['access_token'];
     }
+    public function indexEwm(){
+        $id=request('status');
+
+        $openid=$this->getOpenid();
+
+        Cache::put('WxLogin_'.$id,$openid,10);
+        return '扫码成功,请等待PC端跳转';
+    }
 
     public function wxChatStatus(Request $request)
     {
         $status = $request->status;   //二维码唯一标识
-        $openid=Cache::get('wechat_'.$status);
+        $openid=Cache::get('WxLogin_'.$status);
         if(!$openid){
             return json_encode(['code'=>0,'msg'=>'用户未扫码']);
         }
         return json_encode(['code'=>1,'msg'=>'扫码成功,请等待PC端跳转']);
     }
 
-    public static function getOpenid()
+    public  function getOpenid()
     {
-        //先去session里取openid
         $openid = session('openid');
         //var_dump($openid);die;
         if(!empty($openid)){
@@ -114,7 +122,7 @@ class WxChatController extends Controller
             $host = $_SERVER['HTTP_HOST'];  //域名
             $uri = $_SERVER['REQUEST_URI']; //路由参数
             $redirect_uri = urlencode("http://".$host.$uri);  // ?code=xx
-//             dd($redirect_uri);
+            // dd($redirect_uri);
             $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".env('WxappID')."&redirect_uri={$redirect_uri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
             header("location:".$url);die;
         }else{
