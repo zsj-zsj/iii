@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\GoodsModel;
 use App\Model\CateModel;
+use App\Model\AttrModel;
+use App\Model\SkuModel;
+use App\Model\GoodsAttrModel;
 use App\Model\Index\HistoryModel;
 use Illuminate\Support\Facades\Cookie;
 
@@ -17,13 +20,19 @@ class GoodsController extends Controller
         //商品数据
         $id=\request()->goods_id;
         $res=GoodsModel::find($id);
+        if(!$res){
+            echo "<script>alert('没有次商品');location.href='getCateGoods';</script>";
+        }
 
+        //商品属性
+        $goodsAttrData = GoodsAttrModel::join('shop_attr','shop_attr.attr_id','=','shop_goods_attr.attr_id')
+            ->where(['goods_id'=>$id])
+            ->get()->toArray();
+//        dd($goodsAttrData);
         //浏览历史  存
         $user=checkLogin();
-
         $cookie=Cookie::get('historyGoods');
         $cookie=json_decode($cookie,true);
-
         if(!$user){
             //cookie
             $arr=[
@@ -47,6 +56,7 @@ class GoodsController extends Controller
         return view('index.goods.goodsDetail',['cate'=>$cate,'goodsInfo'=>$res]);
     }
 
+    //清空浏览历史
     public function historyNull()
     {
         $user=checkLogin();

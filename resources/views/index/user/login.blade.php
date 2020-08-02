@@ -85,7 +85,7 @@
                     <tr height="70">
                         <td>验证码</td>
                         <td>
-                            <input type="password" name="captcha" id="pass" class="l_ipt" />
+                            <input type="text" name="captcha"  class="l_ipt" />
                             <img src="{{captcha_src('default')}}"  style="cursor: pointer" onclick="this.src='{{captcha_src('default')}}'+Math.random()">
                         </td>
                     </tr>
@@ -138,6 +138,11 @@
             alert('请输入密码')
             return
         }
+        var captcha = $("input[name='captcha']").val()
+        if(!captcha){
+            alert('请输入验证码')
+            return
+        }
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -145,7 +150,7 @@
         })
         $.post(
             "{{url('loginDo')}}",
-            {user_name:name,user_pwd:pwd},
+            {user_name:name,user_pwd:pwd,captcha:captcha},
             function (res) {
                 if(res.code == 0){
                     location.href='/'

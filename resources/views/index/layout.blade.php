@@ -42,7 +42,6 @@
 </head>
 <body>
 {{--头--}}
-{{print_r(session('openid'))}}}
 <div class="soubg">
     <div class="sou">
         <span class="fr">
@@ -50,7 +49,7 @@
                 @if(!session('user'))
                 你好，请<a href="{{url('login')}}">登录</a>&nbsp; <a href="{{url('reg')}}" style="color:#ff4e00;">免费注册</a>
                 @else
-                    欢迎 <b style="color: red">{{session('user.user_name')}}</b>登录
+                    欢迎 <b style="color: red">{{session('user.user_name')}}</b>登录 | <a href="{{url('Quit')}}">退出登录</a>
                 @endif
                 &nbsp;|&nbsp;<a href="">我的订单</a>&nbsp;
             </span>

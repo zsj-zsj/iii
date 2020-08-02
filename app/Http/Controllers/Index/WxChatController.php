@@ -62,7 +62,7 @@ class WxChatController extends Controller
             return json_encode(['code'=>0,'msg'=>'用户未扫码']);
         }
         //根据openid获取用户信息
-        //
+        $token='https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN';
         //
         return json_encode(['code'=>1,'msg'=>'扫码成功,请等待PC端跳转']);
     }

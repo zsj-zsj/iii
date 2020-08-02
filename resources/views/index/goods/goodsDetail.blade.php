@@ -37,8 +37,8 @@
             <div class="des_join">
                 <div class="j_nums">
                     <input type="text" value="1" name="" class="n_ipt" />
-                    <input type="button" value="" onclick="addUpdate(jq(this));" class="n_btn_1" />
-                    <input type="button" value="" onclick="jianUpdate(jq(this));" class="n_btn_2" />
+                    <input type="button" style="background: red" value="+" id="add" class="n_btn_1" />
+                    <input type="button" style="background: red" value="-" id="less" class="n_btn_2" />
                 </div>
                 <span class="fl"><a onclick="ShowDiv_1('MyDiv1','fade1')"><img src="/style/indexStyle/images/j_car.png" /></a></span>
             </div>

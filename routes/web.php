@@ -120,17 +120,13 @@ Route::post('regEmailSendCode','Index\UserController@regEmailSendCode'); //邮�
 Route::get('onlyName','Index\UserController@onlyName'); //ajax用户名唯一性
 Route::get('login','Index\UserController@login');    //登录
 Route::post('loginDo','Index\UserController@loginDo');    //执行登录
-
+Route::get('Quit','Index\UserController@Quit');    //退出
 
 Route::get('wxChat','Index\WxChatController@wxChat');    //生成二维码
 Route::get('indexEwm','Index\WxChatController@indexEwm');    //二维码视图页面
 Route::get('wxChatStatus','Index\WxChatController@wxChatStatus');    //监听扫码状态
 
 Route::get('/','Index\IndexController@index');    //前台首页
-//Route::get('/',function(){
-//    phpinfo();
-//});
-
 Route::get('getMore','Index\IndexController@getMore');    //楼层
 Route::get('getMenu','Index\IndexController@getMenu');    //分类菜单
 Route::get('getCateGoods','Index\IndexController@getCateGoods');    //获取首页分类下的商品

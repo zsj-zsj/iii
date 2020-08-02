@@ -198,6 +198,12 @@ class UserController extends Controller
         $data=\request()->all();
         $res=UserModel::where(['user_name'=>$data['user_name']])->first();
         if($res){
+            if(!captcha_check($data['captcha'])){
+                return $arr=[
+                    'code'=>59,
+                    'msg'=>'验证码不对'
+                ];
+            }
             $pass=password_verify($data['user_pwd'],$res->user_pwd);
             if($pass){
                 session(['user'=>$res->toArray()]);
@@ -217,5 +223,11 @@ class UserController extends Controller
                 'msg'=>'用户名不存在'
             ];
         }
+    }
+
+    public function Quit()
+    {
+        session(['user'=>null]);
+        return redirect('/');
     }
 }
