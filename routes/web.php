@@ -127,6 +127,10 @@ Route::get('indexEwm','Index\WxChatController@indexEwm');    //二维码视图�
 Route::get('wxChatStatus','Index\WxChatController@wxChatStatus');    //监听扫码状态
 
 Route::get('/','Index\IndexController@index');    //前台首页
+//Route::get('/',function(){
+//    phpinfo();
+//});
+
 Route::get('getMore','Index\IndexController@getMore');    //楼层
 Route::get('getMenu','Index\IndexController@getMenu');    //分类菜单
 Route::get('getCateGoods','Index\IndexController@getCateGoods');    //获取首页分类下的商品

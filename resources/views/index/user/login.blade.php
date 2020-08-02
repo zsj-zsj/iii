@@ -82,6 +82,13 @@
                             <input type="password" name="user_pwd" id="pass" class="l_pwd" />
                         </td>
                     </tr>
+                    <tr height="70">
+                        <td>验证码</td>
+                        <td>
+                            <input type="password" name="captcha" id="pass" class="l_ipt" />
+                            <img src="{{captcha_src('default')}}"  style="cursor: pointer" onclick="this.src='{{captcha_src('default')}}'+Math.random()">
+                        </td>
+                    </tr>
                     <tr>
                         <td>&nbsp;</td>
                         <td style="font-size:12px; padding-top:20px;">

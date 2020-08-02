@@ -42,6 +42,7 @@
 </head>
 <body>
 {{--头--}}
+{{print_r(session('openid'))}}}
 <div class="soubg">
     <div class="sou">
         <span class="fr">
