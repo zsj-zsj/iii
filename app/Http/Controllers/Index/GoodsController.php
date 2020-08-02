@@ -18,17 +18,44 @@ class GoodsController extends Controller
     public function goodsDetail()
     {
         //商品数据
-        $id=\request()->goods_id;
+        $id=request()->get('goods_id');
         $res=GoodsModel::find($id);
         if(!$res){
             echo "<script>alert('没有次商品');location.href='getCateGoods';</script>";
         }
-
         //商品属性
         $goodsAttrData = GoodsAttrModel::join('shop_attr','shop_attr.attr_id','=','shop_goods_attr.attr_id')
             ->where(['goods_id'=>$id])
             ->get()->toArray();
 //        dd($goodsAttrData);
+        $attr_name = [];
+
+        foreach ( $goodsAttrData as $k=>$v ){
+            if (!empty($goodsAttrData[$k+1])){
+                if ( $goodsAttrData[$k+1]['attr_name']!=$v['attr_name'] ){
+                    $attr_name[$k-1]['attr_value'][]=$v['attr_value'];
+                }else {
+                    if (!empty($v['attr_name'])) {
+                        $attr_name[$k]['attr_name'] = $v['attr_name'];
+                    }
+                    if (!empty($v['attr_value'])) {
+                        $attr_name[$k]['attr_value'][] = $v['attr_value'];
+                    }
+                }
+            }else{
+                if ($goodsAttrData[$k-1]['attr_name']==$v['attr_name'] ){
+                    $attr_name[$k-1]['attr_value'][]=$v['attr_value'];
+                }else {
+                    if (!empty($v['attr_name'])) {
+                        $attr_name[$k]['attr_name'] = $v['attr_name'];
+                    }
+                    if (!empty($v['attr_value'])) {
+                        $attr_name[$k]['attr_value'][] = $v['attr_value'];
+                    }
+                }
+            }
+        }
+
         //浏览历史  存
         $user=checkLogin();
         $cookie=Cookie::get('historyGoods');
@@ -53,7 +80,7 @@ class GoodsController extends Controller
         }
         //菜单
         $cate=CateModel::getMenu();
-        return view('index.goods.goodsDetail',['cate'=>$cate,'goodsInfo'=>$res]);
+        return view('index.goods.goodsDetail',['cate'=>$cate,'goodsInfo'=>$res,'attrName'=>$attr_name]);
     }
 
     //清空浏览历史

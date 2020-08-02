@@ -13,24 +13,20 @@
                 商品名称：<b style="color: red">{{$goodsInfo->goods_name}}</b>
             </div>
             <div class="des_price">
-                本店价格：<b>￥{{$goodsInfo->goods_price}}</b><br />
+                价格：<b>￥{{$goodsInfo->goods_price}}</b><br />
             </div>
+            @foreach( $attrName as $k=>$v )
             <div class="des_choice">
-                <span class="fl">型号选择：</span>
-                <ul>
-                    <li class="checked">30ml<div class="ch_img"></div></li>
-                    <li>50ml<div class="ch_img"></div></li>
-                    <li>100ml<div class="ch_img"></div></li>
-                </ul>
+
+                    <span class="fl">{{$v['attr_name']}}：</span>
+                    <ul>
+                        @foreach($v['attr_value'] as $k=>$v)
+                        <li class="checked">{{$v}}<div class="ch_img"></div></li>
+                        @endforeach
+                    </ul>
+
             </div>
-            <div class="des_choice">
-                <span class="fl">颜色选择：</span>
-                <ul>
-                    <li>红色<div class="ch_img"></div></li>
-                    <li class="checked">白色<div class="ch_img"></div></li>
-                    <li>黑色<div class="ch_img"></div></li>
-                </ul>
-            </div>
+            @endforeach
             <div class="des_share">
                 <div class="d_care"><a onclick="ShowDiv('MyDiv','fade')">收藏商品</a></div>
             </div>
