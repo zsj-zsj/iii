@@ -53,6 +53,7 @@ class WxChatController extends Controller
         $token=json_decode($json,true);
         $redis_key='WxAccessToken';
         Redis::set($redis_key,$token['access_token']);
+        Redis::expire($redis_key,7200);
         return $token['access_token'];
     }
     public function indexEwm(){
