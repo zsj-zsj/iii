@@ -62,9 +62,12 @@ class WxChatController extends Controller
         $redis_key='refresh_token';
         $refresh_token=Redis::get($redis_key);
         $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
-        $userInfo=file_get_contents($token);
-        $userInfo=json_decode($userInfo,true);
-        dd($userInfo);
+        $user=file_get_contents($token);
+        $user=json_decode($user,true);
+        $arr=[
+            'user_name'=>$user['nickname']
+        ];
+        session(['user'=>$arr]);
         Cache::put('WxLogin_'.$id,$openid,10);
         return '扫码成功,请等待PC端跳转';
     }
@@ -76,14 +79,7 @@ class WxChatController extends Controller
         if(!$openid){
             return json_encode(['code'=>0,'msg'=>'用户未扫码']);
         }
-        //根据openid获取用户信息
-        $openid=$this->getOpenid();
-        $redis_key='refresh_token';
-        $refresh_token=Redis::get($redis_key);
-        $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
-        $userInfo=file_get_contents($token);
-        $userInfo=json_decode($userInfo,true);
-        //
+
         return json_encode(['code'=>1,'msg'=>'扫码成功,请等待PC端跳转']);
     }
 
@@ -111,12 +107,11 @@ class WxChatController extends Controller
             $access_token=$data['access_token'];
             $redis_key='refresh_token';
             Redis::set($redis_key,$access_token);
-            Redis::expire($redis_key,60);
-
             $openid = $data['openid'];
             //获取到openid之后  存储到session当中
             session(['openid'=>$openid]);
             return $openid;
         }
     }
+
 }
