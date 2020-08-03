@@ -14,13 +14,14 @@ class SkuController extends Controller
 {
     public function goodSouch()
     {
-        return view('admin.sku.goodSouch');
+        $goods=GoodsModel::where(['goods_del'=>1])->select('goods_id','goods_name')->get();
+        return view('admin.sku.goodSouch',['goods'=>$goods]);
     }
 
     public function goodSouchD()
     {
         $goods_name=\request()->goods_name;
-        $goods_info=GoodsModel::where(['goods_name'=>$goods_name])->first();
+        $goods_info=GoodsModel::where(['goods_id'=>$goods_name])->first();
         if(!$goods_info){
             return $arr=[
                 'code'=>500,
@@ -29,12 +30,6 @@ class SkuController extends Controller
         }else{
             return $goods_info->toArray();
         }
-    }
-
-    public function getGoods()
-    {
-        $res=GoodsModel::where(['goods_del'=>1])->get();
-        return view('admin.sku.getGoods',['data'=>$res]);
     }
 
     public function create()

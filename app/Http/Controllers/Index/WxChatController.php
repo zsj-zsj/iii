@@ -13,7 +13,13 @@ class WxChatController extends Controller
     //生成二维码
     public function wxChat()
     {
-        $accessToken=$this->getAccessToken();
+        $redis_key='WxAccessToken';
+        if($redis_key){
+            $accessToken=Redis::get($redis_key);
+        }else{
+            $accessToken=$this->getAccessToken();
+        }
+
         //post
         $status = md5(uniqid());
         $postData = [
@@ -44,6 +50,8 @@ class WxChatController extends Controller
         $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.env('WxappID').'&secret='.env('Wxappsecret');
         $json= file_get_contents($url);
         $token=json_decode($json,true);
+        $redis_key='WxAccessToken';
+        Redis::set($redis_key,$token['access_token']);
         return $token['access_token'];
     }
     public function indexEwm(){

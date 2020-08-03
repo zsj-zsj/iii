@@ -29,7 +29,12 @@
                             <form id="form"  method="post"  class="form-horizontal">
                                 <div class="col-lg-5" id="iiiii">
                                     <div class="input-group">
-                                        <input type="text" placeholder="商品名称" id="goods_name"  name="goods_name"  class="form-control">
+                                        <select name="goods_id" class="form-control" id="">
+                                            <option value="">请选择</option>
+                                            @foreach($goods as $v)
+                                                <option value="{{$v->goods_id}}">{{$v->goods_name}}</option>
+                                            @endforeach
+                                        </select>
                                         <span class="input-group-btn">
                                             <button class="btn btn-default" type="button" id="souch" >搜索</button>
                                         </span>
@@ -37,7 +42,6 @@
                                 </div>
                             </form>
                             <a href="{{url('admin/goods/index')}}" class="btn btn-warning">商品列表</a>
-                            <a href="{{url('admin/goodsSku/getGoods')}}" class="btn btn-warning">查看商品</a>
                         </div>
                     </div>
                 </div>
@@ -46,7 +50,7 @@
     </div>
     <script>
         $(document).on('click','#souch',function () {
-            var goods_name = $("input[name='goods_name']").val()
+            var goods_name = $("select[name='goods_id']").val()
             $.ajax({
                 data : {goods_name:goods_name},
                 url : "{{url('/admin/goodsSku/goodSouchD')}}",

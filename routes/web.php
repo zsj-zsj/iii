@@ -78,7 +78,6 @@ Route::prefix('admin')->middleware('login')->group(function(){
     Route::post('goodsAttr/upd','Admin\GoodsAttrController@upd');   //修改
     //sku 库存
     Route::get('goodsSku/goodSouch','Admin\SkuController@goodSouch');   //搜索商品页
-    Route::get('goodsSku/getGoods','Admin\SkuController@getGoods');   //搜索商品页
     Route::get('goodsSku/goodSouchD','Admin\SkuController@goodSouchD');   //执行搜索商品页
     Route::get('goodsSku/create','Admin\SkuController@create');   //sku添加页面
     Route::post('goodsSku/store','Admin\SkuController@store');   //sku执行添加
