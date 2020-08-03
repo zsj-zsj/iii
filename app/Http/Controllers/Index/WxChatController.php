@@ -14,7 +14,8 @@ class WxChatController extends Controller
     public function wxChat()
     {
         $redis_key='WxAccessToken';
-        if($redis_key){
+        $accessToken=Redis::get($redis_key);
+        if($accessToken){
             $accessToken=Redis::get($redis_key);
         }else{
             $accessToken=$this->getAccessToken();
