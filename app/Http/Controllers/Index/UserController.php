@@ -228,7 +228,6 @@ class UserController extends Controller
     public function Quit()
     {
         session(['user'=>null]);
-        session(['WxUser'=>null]);
         return redirect('/');
     }
 }

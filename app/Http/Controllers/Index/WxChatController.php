@@ -76,7 +76,10 @@ class WxChatController extends Controller
         $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
         $user=file_get_contents($token);
         $user=json_decode($user,true);
-        session(['WxUser'=>$user]);
+        $arr=[
+            'user_name'=>$user['nickname']
+        ];
+        session(['user'=>$arr]);
         return json_encode(['code'=>1,'msg'=>'正在登录中···']);
     }
 
