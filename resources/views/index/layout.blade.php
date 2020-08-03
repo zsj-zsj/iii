@@ -46,10 +46,15 @@
     <div class="sou">
         <span class="fr">
         	<span class="fl">
-                @if(!session('user'))
-                你好，请<a href="{{url('login')}}">登录</a>&nbsp; <a href="{{url('reg')}}" style="color:#ff4e00;">免费注册</a>
+                 @if(session('WxUser'))
+                    欢迎 <b style="color: red"> {{(session('WxUser.nickname')) ?? '' }} </b> 登录 |
+                    <a href="{{url('Quit')}}">退出登录</a>
                 @else
-                    欢迎 <b style="color: red">{{session('user.user_name')}} {{session('WxUser.nickname') ?? ''}}} </b>登录 | <a href="{{url('Quit')}}">退出登录</a>
+                    @if(!session('user'))
+                    你好，请<a href="{{url('login')}}">登录</a>&nbsp; <a href="{{url('reg')}}" style="color:#ff4e00;">免费注册</a>
+                    @else
+                        欢迎 <b style="color: red">{{session('user.user_name')}}</b>登录 | <a href="{{url('Quit')}}">退出登录</a>
+                    @endif
                 @endif
                 &nbsp;|&nbsp;<a href="">我的订单</a>&nbsp;
             </span>
