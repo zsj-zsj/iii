@@ -59,6 +59,12 @@ class WxChatController extends Controller
     public function indexEwm(){
         $id=request()->status;
         $openid=$this->getOpenid();
+        $redis_key='refresh_token';
+        $refresh_token=Redis::get($redis_key);
+        $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
+        $userInfo=file_get_contents($token);
+        $userInfo=json_decode($userInfo,true);
+        dd($userInfo);
         Cache::put('WxLogin_'.$id,$openid,10);
         return '扫码成功,请等待PC端跳转';
     }
