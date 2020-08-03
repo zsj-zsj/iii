@@ -64,10 +64,7 @@ class WxChatController extends Controller
         $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
         $user=file_get_contents($token);
         $user=json_decode($user,true);
-        $arr=[
-            'user_name'=>$user['nickname']
-        ];
-        session(['user'=>$arr]);
+        session(['WxUser'=>$user]);
         Cache::put('WxLogin_'.$id,$openid,10);
         return '扫码成功,请等待PC端跳转';
     }
@@ -85,11 +82,6 @@ class WxChatController extends Controller
 
     public  function getOpenid()
     {
-        $openid = session('openid');
-        //var_dump($openid);die;
-        if(!empty($openid)){
-            return $openid;
-        }
         $code = request()->input('code');
         if(empty($code)){
             //没有授权 跳转到微信服务器进行授权
