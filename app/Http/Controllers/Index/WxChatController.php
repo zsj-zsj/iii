@@ -58,7 +58,13 @@ class WxChatController extends Controller
     }
     public function indexEwm(){
         $id=request()->status;
-
+        $openid=$this->getOpenid();
+        $redis_key='refresh_token';
+        $refresh_token=Redis::get($redis_key);
+        $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
+        $userInfo=file_get_contents($token);
+        $userInfo=json_decode($userInfo,true);
+        
         $openid=$this->getOpenid();
         Cache::put('WxLogin_'.$id,$openid,10);
         return '扫码成功,请等待PC端跳转';
@@ -72,7 +78,12 @@ class WxChatController extends Controller
             return json_encode(['code'=>0,'msg'=>'用户未扫码']);
         }
         //根据openid获取用户信息
-        $token='https://api.weixin.qq.com/sns/oauth2/refresh_token?appid=APPID&grant_type=refresh_token&refresh_token=REFRESH_TOKEN';
+        $openid=session('openid');
+        $redis_key='refresh_token';
+        $refresh_token=Redis::get($redis_key);
+        $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
+        $a=file_get_contents($token);
+        dd($a);
         //
         return json_encode(['code'=>1,'msg'=>'扫码成功,请等待PC端跳转']);
     }
@@ -91,13 +102,18 @@ class WxChatController extends Controller
             $uri = $_SERVER['REQUEST_URI']; //路由参数
             $redirect_uri = urlencode("http://".$host.$uri);  // ?code=xx
             // dd($redirect_uri);
-            $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".env('WxappID')."&redirect_uri={$redirect_uri}&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+            $url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=".env('WxappID')."&redirect_uri={$redirect_uri}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
             header("location:".$url);die;
         }else{
             //通过code换取网页授权access_token
             $url =  "https://api.weixin.qq.com/sns/oauth2/access_token?appid=".env('WxappID')."&secret=".env('Wxappsecret')."&code={$code}&grant_type=authorization_code";
             $data = file_get_contents($url);
             $data = json_decode($data,true);
+            $access_token=$data['access_token'];
+            $redis_key='refresh_token';
+            Redis::set($redis_key,$access_token);
+            Redis::expire($redis_key,60);
+
             $openid = $data['openid'];
             //获取到openid之后  存储到session当中
             session(['openid'=>$openid]);
