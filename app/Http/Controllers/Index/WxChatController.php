@@ -59,13 +59,6 @@ class WxChatController extends Controller
     public function indexEwm(){
         $id=request()->status;
         $openid=$this->getOpenid();
-        $redis_key='refresh_token';
-        $refresh_token=Redis::get($redis_key);
-        $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
-        $userInfo=file_get_contents($token);
-        $userInfo=json_decode($userInfo,true);
-        
-        $openid=$this->getOpenid();
         Cache::put('WxLogin_'.$id,$openid,10);
         return '扫码成功,请等待PC端跳转';
     }
@@ -78,12 +71,12 @@ class WxChatController extends Controller
             return json_encode(['code'=>0,'msg'=>'用户未扫码']);
         }
         //根据openid获取用户信息
-        $openid=session('openid');
+        $openid=$this->getOpenid();
         $redis_key='refresh_token';
         $refresh_token=Redis::get($redis_key);
         $token='https://api.weixin.qq.com/sns/userinfo?access_token='.$refresh_token.'&openid='.$openid.'&lang=zh_CN';
-        $a=file_get_contents($token);
-        dd($a);
+        $userInfo=file_get_contents($token);
+        $userInfo=json_decode($userInfo,true);
         //
         return json_encode(['code'=>1,'msg'=>'扫码成功,请等待PC端跳转']);
     }
