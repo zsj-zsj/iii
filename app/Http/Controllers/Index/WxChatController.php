@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Cache;
+use App\Model\Index\UserModel;
 
 class WxChatController extends Controller
 {
@@ -79,6 +80,10 @@ class WxChatController extends Controller
         $arr=[
             'user_name'=>$user['nickname']
         ];
+        $n=UserModel::where(['user_name'=>$user['nickname']])->first();
+        if(!$n){
+            UserModel::insert($arr);
+        }
         session(['user'=>$arr]);
         return json_encode(['code'=>1,'msg'=>'正在登录中···']);
     }

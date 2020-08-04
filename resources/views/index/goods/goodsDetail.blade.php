@@ -21,7 +21,7 @@
                     <span class="fl">{{$v['attr_name']}}：</span>
                     <ul>
                         @foreach($v['attr_value'] as $k=>$v)
-                        <li class="checked">{{$v}}<div class="ch_img"></div></li>
+                        <li class="" id="style">{{$v}}<div class="ch_img"></div></li>
                         @endforeach
                     </ul>
 
@@ -110,8 +110,6 @@
                     </tr>
                 </table>
 
-
-
                 <table border="0" class="jud_list" style="width:100%; margin-top:30px;" cellspacing="0" cellpadding="0">
                     <tr valign="top">
                         <td width="160"><img src="/style/indexStyle/images/peo1.jpg" width="20" height="20" align="absmiddle" />&nbsp;向死而生</td>
@@ -125,7 +123,6 @@
                         </td>
                     </tr>
                 </table>
-
 
                 <div class="pages">
                     <a href="#" class="p_pre">上一页</a><a href="#" class="cur">1</a><a href="#">2</a><a href="#">3</a>...<a href="#">20</a><a href="#" class="p_pre">下一页</a>
@@ -166,7 +163,6 @@
     </div>
     <!--End 弹出层-收藏成功 End-->
 
-
     <!--Begin 弹出层-加入购物车 Begin-->
     <div id="fade1" class="black_overlay"></div>
     <div id="MyDiv1" class="white_content">
@@ -195,5 +191,13 @@
     </div>
     <!--End 弹出层-加入购物车 End-->
 
+    <script>
+        $(document).on('click','#style',function () {
+            var _this= $(this)
+            _this.addClass('checked').siblings('li').removeClass('checked')
+        })
+        //-
+
+    </script>
 
 @endsection
