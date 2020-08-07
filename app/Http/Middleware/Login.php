@@ -15,7 +15,7 @@ class Login
      */
     public function handle($request, Closure $next)
     {
-        $user=session('user');
+        $user=session('users');
         if(!$user){
             echo "<script>alert('请先登录');location.href='/adminLogin';</script>";
         }

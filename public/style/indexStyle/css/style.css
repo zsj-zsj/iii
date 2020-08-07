@@ -2251,7 +2251,7 @@ table.car_tab tr td.car_th{
 	width:42px; height:21px; line-height:21px\9; background-color:#FFF; color:#555555; font-size:14px; text-align:center; font-family:"Microsoft YaHei"; float:left; padding:0; border:0;
 }
 .car_btn_1{
-	width:21px; height:21px; overflow:hidden; background:url(../images/jian.gif) no-repeat center top; float:left; border:0; border-right:1px solid #cccccc; cursor:pointer;
+	width:18px; height:18px; overflow:hidden; background:url(../images/jian.gif) no-repeat center top; float:left; border:0; border-right:1px solid #cccccc; cursor:pointer;
 }
 .car_btn_2{
 	width:21px; height:21px; overflow:hidden; background:url(../images/jia.gif) no-repeat center top; float:left; border:0; border-left:1px solid #cccccc; cursor:pointer;

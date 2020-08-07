@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="/style/indexStyle/limit/bootstrap.min.css">
     <script src="/style/indexStyle/limit/jquery.min.js"></script>
     <script src="/style/indexStyle/limit/bootstrap.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title')</title>
 </head>
 <body>
@@ -70,20 +71,12 @@
         </form>
     </div>
     <div class="i_car">
-        <div class="car_t">购物车 [ <span>3</span> ]</div>
+        <div class="car_t">购物车</div>
         <div class="car_bg">
             @if(!session('user'))
                 <div class="un_login">还未登录！<a href="{{url('login')}}" style="color:#ff4e00;">马上登录</a> 查看购物车！</div>
             @else
-                <ul class="cars">
-                    <li>
-                        <div class="img"><a href="#"><img src="/style/indexStyle/images/car2.jpg" width="58" height="58" /></a></div>
-                        <div class="name"><a href="#">香奈儿（Chanel）邂逅活力淡香水50ml</a></div>
-                        <div class="price"><font color="#ff4e00">￥399</font> X1</div>
-                    </li>
-                </ul>
-                <div class="price_sum">共计&nbsp; <font color="#ff4e00">￥</font><span>1058</span></div>
-                <div class="price_a"><a href="#">去购物车结算</a></div>
+                <div class="price_a"><a href="{{url('shop/cartList')}}">购物车列表</a></div>
             @endif
         </div>
     </div>

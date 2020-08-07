@@ -197,6 +197,10 @@ class UserController extends Controller
     {
         $data=\request()->all();
         $res=UserModel::where(['user_name'=>$data['user_name']])->first();
+
+        $errno_num = $res['errno_num'];
+        $errno_num++;
+
         if($res){
             if(!captcha_check($data['captcha'])){
                 return $arr=[
@@ -206,16 +210,58 @@ class UserController extends Controller
             }
             $pass=password_verify($data['user_pwd'],$res->user_pwd);
             if($pass){
+                //密码相等
+                if($errno_num >=3 && time()-$res->errno_time<=3600 ){
+                    $time=ceil((3600-(time()-$res->errno_time))/60);
+                    return $arr=[
+                        'code'=>500,
+                        'msg'=>'用户已被锁定，还有'.$time.'分钟后解锁'
+                    ];
+                }else{
+
+                }
+                $data=[
+                    'errno_num'=>0,
+                    'errno_time'=>null
+                ];
+                UserModel::where(['user_name'=>$res->user_name])->update($data);
                 session(['user'=>$res->toArray()]);
                 return $arr=[
                     'code'=>0,
                     'msg'=>'登录成功'
                 ];
             }else{
-                return $arr=[
-                    'code'=>500,
-                    'msg'=>'密码不对'
-                ];
+                //密码不相等
+                if($errno_num >= 3 && time()-$res->errno_time>=3600 ){
+                    $data=[
+                        'errno_num'=>1,
+                        'errno_time'=>time()
+                    ];
+                    UserModel::where(['user_name'=>$res->user_name])->update($data);
+                    $arr=[
+                        'code'=>500,
+                        'msg'=>'密码错误，还有两次机会'
+                    ];
+                }else{
+                    if($errno_num >= 3){
+                        $arr=[
+                            'code'=>500,
+                            'msg'=>'用户已锁定'
+                        ];
+                    }else{
+                        $data=[
+                            'errno_num'=>$errno_num,
+                            'errno_time'=>time()
+                        ];
+                        UserModel::where(['user_name'=>$res->user_name])->update($data);
+                        $num = 3-$errno_num;
+                        $arr=[
+                            'code'=>500,
+                            'msg'=>'密码错误,还有'.$num.'次机会'
+                        ];
+                    }
+                }
+                return $arr;
             }
         }else{
             return $arr=[

@@ -161,7 +161,7 @@ class UserController extends Controller
                 $res['perm']=RolePermModel::
                     join('rbac_permission','rbac_permission.permission_id','=','rbac_rp.permission_id')
                     ->where(['role_id'=>$res['role_id']])->where(['rp_del'=>1,'permission_del'=>1])->get()->toArray();
-                session(['user'=>$res]);
+                session(['users'=>$res]);
                 session(['name'=>$res->user_name]);
                 session(['time'=>date('Y-m-d H:i:s')]);
                 return $arr=[

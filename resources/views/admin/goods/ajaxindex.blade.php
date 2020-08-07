@@ -26,10 +26,10 @@
                 <td >{{$v->goods_price}}</td>
                 <td>
                     <a href="javascript:;"><b style="color: blue">
-                            <i id="del" attr_id="{{$v->attr_id}}" class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                            <i id="del"  goods_id="{{$v->goods_id}}" class="glyphicon glyphicon-trash" aria-hidden="true"></i>
                         </b></a> &nbsp;
                     <a href="javascript:;"><b style="color: red">
-                            <i id="upd" attr_id="{{$v->attr_id}}" class="glyphicon glyphicon-heart" aria-hidden="true"></i>
+                            <i id="upd" goods_id="{{$v->goods_id}}" class="glyphicon glyphicon-heart" aria-hidden="true"></i>
                         </b></a>
                 </td>
             </tr>

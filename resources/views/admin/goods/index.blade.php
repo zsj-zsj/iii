@@ -70,7 +70,7 @@
                                             <td >{{$v->cate_name}}</td>
                                             <td >{{$v->brand_name}}</td>
                                             <td ><img src="{{env('APP_URL')}}/app/{{$v->goods_img}}" width="100px" height="100px"> </td>
-                                            <td >{{$v->goods_desc}}</td>
+                                            <td >{!!$v->goods_desc!!}</td>
                                             <td >{{$v->goods_price}}</td>
                                             <td>
                                                 <a href="javascript:;"><b style="color: blue">

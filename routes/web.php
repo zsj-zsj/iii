@@ -131,8 +131,17 @@ Route::get('getMenu','Index\IndexController@getMenu');    //分类菜单
 Route::get('getCateGoods','Index\IndexController@getCateGoods');    //获取首页分类下的商品
 Route::get('getBrandGoods','Index\IndexController@getBrandGoods');    //获取品牌下的商品
 Route::get('getPCateGoods','Index\IndexController@getPCateGoods');    //获取分类下的商品
-
-Route::get('goodsDetail','Index\GoodsController@goodsDetail');    //获取分类下的商品
+Route::get('goodsDetail','Index\GoodsController@goodsDetail');    //商品详情
+Route::get('getPriceNum','Index\GoodsController@getPriceNum');    //获取商品属性 价格库存
 Route::get('historyNull','Index\GoodsController@historyNull');    //清空浏览历史
+
+Route::prefix('shop')->middleware('UserLoginIndex')->group(function(){
+    Route::post('addCart','Index\CartController@addCart');    //加入购物车
+    Route::get('cartList','Index\CartController@cartList');     //购物车列表
+    Route::get('getCountPrice','Index\CartController@getCountPrice');     //购物车列表页，获取总价
+    Route::get('changeNum','Index\CartController@changeNum');     //购物车列表页，改变input数量
+    Route::get('getTotal','Index\CartController@getTotal');     //购物车列表页，重新获取小计
+    Route::get('cartDel','Index\CartController@cartDel');     //购物车单删
+});
 
 
