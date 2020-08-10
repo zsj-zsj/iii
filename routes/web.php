@@ -142,6 +142,7 @@ Route::prefix('shop')->middleware('UserLoginIndex')->group(function(){
     Route::get('changeNum','Index\CartController@changeNum');     //购物车列表页，改变input数量
     Route::get('getTotal','Index\CartController@getTotal');     //购物车列表页，重新获取小计
     Route::get('cartDel','Index\CartController@cartDel');     //购物车单删
+    Route::get('cartDelMore','Index\CartController@cartDelMore');     //购物车批删
 });
 
 

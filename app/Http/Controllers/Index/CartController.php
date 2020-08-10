@@ -235,4 +235,17 @@ class CartController extends Controller
         }
     }
 
+    public function cartDelMore()
+    {
+        $cart_id=\request()->cart_id;
+        $cart_id = explode(',',$cart_id);
+        $res=CartModel::whereIn('cart_id',$cart_id)->update(['cart_del'=>2]);
+        if($res){
+            return $arr=[
+                'code'=>0,
+                'msg'=>'删除成功'
+            ];
+        }
+    }
+
 }

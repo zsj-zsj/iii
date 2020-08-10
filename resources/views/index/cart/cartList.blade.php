@@ -40,13 +40,12 @@
                     </div>
                 </td>
                 <td align="center" style="color:#ff4e00;" class="total">￥{{$v['buy_num'] * $v['buy_price']}}</td>
-                <td align="center"><a href="javascript:;" id="del">删除</a>&nbsp;<a href="#">加入收藏</a></td>
+                <td align="center"><a href="javascript:;" id="del">删除</a>&nbsp;<a href="javascript:;" id="collect">加入收藏</a></td>
             </tr>
             @endforeach
             <tr height="70">
                 <td colspan="6" style="font-family:'Microsoft YaHei'; border-bottom:0;">
                     <label class="r_rad"></label><label class="r_txt"> <a href="javascript:;" id="delMore">批量删除</a> </label>
-                    <label class="r_rad"></label><label class="r_txt"> <a href="">清空购物车</a> </label>
                     <span class="fr">商品总价：<b style="font-size:22px; color:#ff4e00;" id="total_price">￥0</b></span>
                 </td>
             </tr>
@@ -60,13 +59,33 @@
     </div>
 
     <script>
+        //收藏
+
         //批删
         $(document).on('click','#delMore',function () {
             var _box = $(".box:checked")
             var cart_id  = ''
             if(_box.length>0){
-
+                _box.each(function (index) {
+                    cart_id += $(this).parents('tr').attr('cart_id')+','
+                })
             }
+            cart_id = cart_id.substr(0,cart_id.length-1);
+            if(!cart_id){
+                alert('请选择')
+                return
+            }
+            $.ajax({
+                url : "{{url('/shop/cartDelMore')}}",
+                data : {cart_id:cart_id},
+                dataType : "json",
+                success : function (res) {
+                    if(res.code == 0){
+                        alert(res.msg)
+                        location.href = '/shop/cartList'
+                    }
+                }
+            })
         })
         //单删
         $(document).on('click','#del',function () {
@@ -84,9 +103,6 @@
                 }
             })
         })
-        //收藏
-        //清空
-
         //全选
         $(document).on('click','#allBox',function(){
             var _this=$(this);
